@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.log
+qdrant_data/
+fernando.txt
+maria.txt
+smoke.out.log
+smoke.err.log
+server.out.log
+server.err.log
