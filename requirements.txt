@@ -1,0 +1,12 @@
+fastapi
+uvicorn[standard]
+pydantic
+python-multipart
+requests
+qdrant-client
+celery
+sentence-transformers
+fastembed
+transformers
+torch
+pdfminer.six

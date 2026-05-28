@@ -1,0 +1,35 @@
+services:
+  api:
+    build: .
+    container_name: alejandria-api
+    ports:
+      - "8000:8000"
+    environment:
+      CELERY_EXECUTION_MODE: celery
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+      LLM_PROVIDER: huggingface
+      HF_MODEL: HuggingFaceTB/SmolLM2-135M-Instruct
+    volumes:
+      - ./qdrant_data:/app/qdrant_data
+    depends_on:
+      - redis
+
+  worker:
+    build: .
+    container_name: alejandria-worker
+    command: celery -A worker.celery_app worker --loglevel=info
+    environment:
+      CELERY_EXECUTION_MODE: celery
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+    volumes:
+      - ./qdrant_data:/app/qdrant_data
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:7-alpine
+    container_name: alejandria-redis
+    ports:
+      - "6379:6379"
